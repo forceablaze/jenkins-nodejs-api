@@ -4,7 +4,7 @@
   "description": "The NodeJS binding Jenkins API",
   "main": "index.js",
   "scripts": {
-    "test": "babel-node src/main.js",
+    "test": "babel-node src/index.js",
     "build": "babel src -d lib"
   },
   "repository": {
@@ -24,6 +24,7 @@
     "@babel/preset-env": "^7.8.4"
   },
   "dependencies": {
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4"
   }
 }
