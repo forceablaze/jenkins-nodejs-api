@@ -1,0 +1,26 @@
+{
+  "name": "jenkins-nodejs-api",
+  "version": "1.0.0",
+  "description": "The NodeJS binding Jenkins API",
+  "main": "index.js",
+  "scripts": {
+    "test": "babel-node src/main.js",
+    "build": "babel src -d lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://enosta.olympus.co.jp/gitlab_01/ipf3/jenkins-nodejs-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "jenkins"
+  ],
+  "author": "Shih-Po Wang",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
+    "@babel/preset-env": "^7.8.4"
+  }
+}
