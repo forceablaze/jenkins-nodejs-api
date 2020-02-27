@@ -64,6 +64,17 @@ class JenkinsAPIClient
 
 class APIHelper
 {
+
+  static search(client, query) {
+    const urlpath = api.SEARCH(query);
+
+    return new Promise( async (resolve, reject) => {
+
+      const response = await client.sendRequest('GET', urlpath);
+      resolve(response.data.suggestions);
+    });
+  }
+
   static getJenkinsInfo(client) {
     const urlpath = api.JENKINS_INFO + client.APITYPE;
 
@@ -110,7 +121,9 @@ class APIHelper
 
   static async getLastBuildResult(client, jobName) {
     const lastBuild = await APIHelper.getLastBuild(client, jobName);
-    return lastBuild.result;
+    return new Promise(resolve => {
+      resolve(lastBuild.result);
+    });
   }
 
   static getJob(client, jobName) {
@@ -139,15 +152,21 @@ const test = async () => {
   client.listAPI();
   //APIHelper.getJenkinsInfo(client);
   try {
-    const buildId = await APIHelper.buildJob(client, 'manage-app-infrastructure');
-    console.log(`build id ${buildId}`);
+    //const buildId = await APIHelper.buildJob(client, 'manage-app-infrastructure');
+    //console.log(`build id ${buildId}`);
+
+    const searchResult = await APIHelper.search(client, 'check');
+    searchResult.forEach((suggestion) => {
+      console.log(`suggestion: ${suggestion.name}`);
+    });
   } catch (error) {
     console.log(error);
   };
-  //APIHelper.getJob(client, 'manage-app-infrastructure');
   //const result = await APIHelper.getLastBuildResult(
   //    client, 'manage-app-infrastructure');
   //console.log(result);
 }
+
+//test()
 
 export { JenkinsAPIClient, APIHelper };

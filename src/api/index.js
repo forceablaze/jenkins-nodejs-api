@@ -4,6 +4,11 @@ let BUILD_TEMPLATE = (jobName) => {
 
 export default {
   JENKINS_INFO: '',
+
+  SEARCH: (query) => {
+    return `/search/suggest?query=${query}`
+  },
+
   BUILD: BUILD_TEMPLATE,
 
   BUILD_WITH_PARAMS: (jobName) => {
