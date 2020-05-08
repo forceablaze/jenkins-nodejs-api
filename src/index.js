@@ -75,15 +75,15 @@ class APIHelper
     });
   }
 
-  static getJenkinsInfo(client) {
+  static async getJenkinsInfo(client) {
     const urlpath = api.JENKINS_INFO + client.APITYPE;
 
-    client.sendRequest('GET', urlpath).
-        then((response) => {
-          console.log(response.data.description)
-          console.log(`Job count: ${response.data.jobs.length}`)
-        }).
-        catch((error) => {})
+    const response = await client.sendRequest('GET', urlpath);
+    let str = '';
+    str += response.data.description;
+    str += `\nJob count: ${response.data.jobs.length}`
+
+    return Promise.resolve(str);
   }
 
   static async buildJob(client, jobName) {
@@ -146,8 +146,7 @@ const test = async () => {
   const client = new JenkinsAPIClient(
     'http://10.155.66.151/jenkins',
     'ipf3-system',
-    '11d63b5d544a84e2eb2d55c23b0e62e838',
-  );
+    '11d63b5d544a84e2eb2d55c23b0e62e838');
 
   client.listAPI();
   //APIHelper.getJenkinsInfo(client);
@@ -155,10 +154,14 @@ const test = async () => {
     //const buildId = await APIHelper.buildJob(client, 'manage-app-infrastructure');
     //console.log(`build id ${buildId}`);
 
+    const info = await APIHelper.getJenkinsInfo(client);
+    console.log(info);
+    /*
     const searchResult = await APIHelper.search(client, 'check');
     searchResult.forEach((suggestion) => {
       console.log(`suggestion: ${suggestion.name}`);
     });
+    */
   } catch (error) {
     console.log(error);
   };
