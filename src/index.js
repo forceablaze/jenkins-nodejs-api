@@ -86,6 +86,30 @@ class APIHelper
     return Promise.resolve(str);
   }
 
+  static async getBuildLog(client, jobName,
+      from = 1, line = 50, buildId = undefined) {
+
+    let buildUrl = ''
+    if(buildId === undefined) {
+      const job = await APIHelper.getJob(client, jobName);
+      buildUrl = job.lastBuild.url
+    }
+    else 
+      buildUrl = api.BUILD_INFO(jobName)
+
+    const urlpath = buildUrl+
+      `/logText/progressiveText?start=${from}`
+
+    let response = await client.sendRequest('POST', urlpath);
+    if(line === undefined)
+      return Promise.resolve(response.data)
+
+    let logs = response.data.split('\n')
+      logs.length = line
+
+    return logs.reduce((a, v) => a + '\n' + v)
+  }
+
   static async buildJob(client, jobName) {
     const urlpath = api.BUILD(jobName);
 
@@ -154,6 +178,12 @@ const test = async () => {
     //const buildId = await APIHelper.buildJob(client, 'manage-app-infrastructure');
     //console.log(`build id ${buildId}`);
 
+    APIHelper.getBuildLog(client, 'manage-app-infrastructure', 1, 1)
+      .then((log) => {
+        console.log(log)
+      })
+      .catch((error) => console.log('error'))
+      
     const info = await APIHelper.getJenkinsInfo(client);
     console.log(info);
     /*

@@ -17,5 +17,10 @@ export default {
 
   JOB_INFO: (jobName) => {
     return `/job/${jobName}`
+  },
+
+  BUILD_INFO: (jobName, buildId) => {
+    return `/job/${jobName}/${buildId}`
   }
+
 };
